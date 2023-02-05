@@ -19,6 +19,10 @@ npm run dev
 ```
 You can then access [http://localhost:8080](http://localhost:8080) on your desktop browser to view the main client (you can try it in multiple windows to load up multiple players simultaneously). You can tap to move your robot around, and you can tap on the QR code to make it larger. Scanning the QR code might not make sense because your phone won't be able to connect to the same localhost, but you can check the console output to see a URL (that will look something like `http//localhost:8080?id=abcd1234`). You can load that URL in another window to function as your controller. 
 
+| Main Client | Controller |
+| - | - |
+| ![alt](game.png) | ![alt](controller.png) |
+
 ## How it works
 The general overview is:
 1. User starts the game on their main device, and the server creates a new Player instance for them
