@@ -41,8 +41,8 @@ You will also need to make sure that you've enabled the `Alexa Web API for Games
 
 ## Documentation
 
-- [BabylonJS documentation](https://photonstorm.github.io/phaser3-docs/index.html)
-- [Colyseus documentation](https://docs.colyseus.io/)
+- [Phaser](https://photonstorm.github.io/phaser3-docs/index.html)
+- [Colyseus](https://docs.colyseus.io/)
 - [Alexa WebAPI](https://developer.amazon.com/en-US/docs/alexa/web-api-for-games/alexa-games-about.html)
 - [Alexa Skills Kit](https://developer.amazon.com/en-US/alexa/alexa-skills-kit)
 
