@@ -8,7 +8,7 @@ import { fileURLToPath } from 'url';
 import { GameRoom } from './server/multiplayer/rooms/GameRoom.js';
 
 //CHANGE THIS TO YOUR WEB APP URL
-const WEB_APP_URL = "https://alexa-phaser-colyseus-demo.herokuapp.com/";
+const WEB_APP_URL = "https://colyseus-chat.herokuapp.com/";
 const PORT = process.env.PORT || 8080;
 
 const app = express();
