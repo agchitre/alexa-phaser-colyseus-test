@@ -197,6 +197,17 @@ export class AlexaServer {
                 .getResponse();
             }
         };
+        const LogRequestInterceptor = {
+            process(handlerInput) {
+                  console.log(`REQUEST ENVELOPE = ${JSON.stringify(handlerInput.requestEnvelope)}`);
+            }
+          };
+          
+          const LogResponseInterceptor = {
+              process(handlerInput, response) {
+                  console.log(`RESPONSE ENVELOPE = ${JSON.stringify(response)}`);
+              }
+          };
         
         const skillBuilder = Alexa.SkillBuilders.custom();
         skillBuilder.addRequestHandlers(
@@ -209,7 +220,12 @@ export class AlexaServer {
             CancelAndStopIntentHandler,
             FallbackIntentHandler,
             SessionEndedRequestHandler,
-        );
+        )
+        .addErrorHandlers(
+            ErrorHandler,
+            )
+        .addRequestInterceptors(LogRequestInterceptor)
+        .addResponseInterceptors(LogResponseInterceptor) ;
         
         const skill = skillBuilder.create();
         const expressAdapter = new ExpressAdapter(skill, false, false);
