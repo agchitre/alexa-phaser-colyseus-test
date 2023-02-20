@@ -3,8 +3,14 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body { font-family: Tahoma, Geneva, sans-serif;
+            background-image: url('/assets/sprites/metaverse.png'); 
+            color: aliceblue;}
+
+      </style>
     <title>Phaser - Template</title>
-    <link rel="stylesheet" href="https://unpkg.com/xterm@4.18.0/css/xterm.css"/>
+    <!-- <link rel="stylesheet" href="https://unpkg.com/xterm@4.18.0/css/xterm.css"/> -->
     <!-- <script src="//cdn.jsdelivr.net/npm/phaser@3.55.2/dist/phaser.min.js"></script> -->
     <script src="https://cdn.html.games.alexa.a2z.com/alexa-html/latest/alexa-html.js"></script>
     <script src="https://unpkg.com/colyseus.js@^0.14.13/dist/colyseus.js"></script>
@@ -14,41 +20,77 @@
   <body>
     <!-- <script type= "module" src="scripts/game.js"></script>
     <img id="qr" onclick="toggleQR();"></img> -->
-    <div id = "terminal"></div>
-    <script>
-         var term = new Terminal({
-                fontFamily: "Hack"
-            });
-            term.open(document.getElementById("terminal"));
+    <strong>Messages</strong><br>
 
+    <form id="form">
+        <input type="text" id="input" value="" autofocus/>
+        <input type="submit" value="send" />
+      </form>
+    <!-- <div id = "terminal"></div> -->
+    <div id="messages"></div>
+    <script>
             const PROTOCOL = window.location.protocol.replace("http", "ws");
             const ENDPOINT = (window.location.hostname.indexOf("heroku") >= 0 || window.location.hostname.indexOf("now.sh") >= 0 )
             ? `${ PROTOCOL }//${ window.location.hostname }` // port 80 on heroku or now
             : `${ PROTOCOL }//${ window.location.hostname }:8080` // port 8080 on localhost
 
-
-
-            
             const roomname = 'gameRoom';
-
-            term.writeln(`connecting to ${ENDPOINT}`);
             var client = new Colyseus.Client(ENDPOINT);
 
-            term.writeln(`joining ${roomname}`);
+            //Alexa Creation
+            var alexaClient;
+            Alexa.create({version: '1.1'})
+                .then((args) => {
+                    const {
+                        alexa,
+                        message
+                    } = args;
+                    alexaClient = alexa;
+                    document.getElementById('debugElement').innerHTML = 'Alexa is ready :)';
+
+                   
+                })
+                .catch(error => {
+                    document.getElementById('debugElement').innerHTML = 'Alexa not ready :(';
+                });
+
+
 
             client.joinOrCreate(roomname).then(room=> {
-                term.writeln('ghosts$');
-
                 room.onMessage("message", (message)=> {
-                    term.write(message);
+                    var p = document.createElement("p");
+                    p.innerText = message;
+                    document.querySelector("#messages").appendChild(p);
                 });
-                
-                term.setOption('cursorBlink',true);
-                term.onData((data) => {
-                    room.send('message', data);
-                })
 
+             // Register a listener to receive a message from your skill
+             alexaClient.skill.onMessage(messageReceivedCallback);
+
+            // Implement the listener
+            const messageReceivedCallback = function(message) {
+                // Process message (JavaScript object) from your skill
+                room.send("message",message.chat);
+            };
+
+
+            // send message to room on submit
+            document.querySelector("#form").onsubmit = function(e) {
+                        e.preventDefault();
+
+                        var input = document.querySelector("#input");
+
+                        console.log("input:", input.value);
+
+                        // send data to room
+                        room.send("message", input.value);
+
+                        // clear input
+                        input.value = "";
+                    };
+               
             });
+
+            
 
     </script>
   </body>
