@@ -74,6 +74,7 @@
                         message
                     } = args;
                     this.alexaClient = alexa;
+              console.log(this.alexaClient);
                     
                     this.alexaClient.skill.onMessage((message) => {   
                       this.room.send("message",message.chat);                 
