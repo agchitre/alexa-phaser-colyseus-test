@@ -23,6 +23,7 @@ export class GameRoom extends Room {
         console.log("Chat Room Created!!!", options);
 
         this.onMessage("message", (client,data)=>{
+            console.log(data);
             this.broadcast("message", `(${client.sessionId}) ${data}`);
         })
     }
