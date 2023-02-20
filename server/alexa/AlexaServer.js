@@ -57,6 +57,28 @@ export class AlexaServer {
             }
         };
         
+        const ChatIntentHandler = {
+            canHandle(handlerInput) {
+                return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
+                    && Alexa.getIntentName(handlerInput.requestEnvelope) === 'ChatIntent';
+            },
+            handle(handlerInput) {
+                var msg = handlerInput.requestEnvelope.intent.slots.saidstring.value;
+        
+                handlerInput.responseBuilder.addDirective({
+                    "type":"Alexa.Presentation.HTML.HandleMessage",
+                    "message": {
+                        "intent":"ChatIntent",
+                        "chat": msg
+                    }
+                });
+
+                return handlerInput.responseBuilder
+                .getResponse();
+            }
+        };
+
+
         const WebAppSpeakIntentHandler = {
           canHandle(handlerInput) {
               return Alexa.getRequestType(handlerInput.requestEnvelope) === 'Alexa.Presentation.HTML.Message'
@@ -178,6 +200,7 @@ export class AlexaServer {
         const skillBuilder = Alexa.SkillBuilders.custom();
         skillBuilder.addRequestHandlers(
             LaunchRequestHandler,
+            ChatIntentHandler,
             WebAppSpeakIntentHandler, 
             WebAppAskIntentHandler,
             WebAppExitIntentHandler,
