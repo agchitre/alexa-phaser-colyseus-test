@@ -37,22 +37,6 @@
             const roomname = 'gameRoom';
             var client = new Colyseus.Client(ENDPOINT);
 
-            //Alexa Creation
-            var alexaClient;
-            Alexa.create({version: '1.1'})
-                .then((args) => {
-                    const {
-                        alexa,
-                        message
-                    } = args;
-                    alexaClient = alexa;
-                    document.getElementById('debugElement').innerHTML = 'Alexa is ready :)';
-
-                   
-                })
-                .catch(error => {
-                    document.getElementById('debugElement').innerHTML = 'Alexa not ready :(';
-                });
 
 
 
@@ -63,15 +47,7 @@
                     document.querySelector("#messages").appendChild(p);
                 });
 
-             // Register a listener to receive a message from your skill
-             alexaClient.skill.onMessage(messageReceivedCallback);
-
-            // Implement the listener
-            const messageReceivedCallback = function(message) {
-                // Process message (JavaScript object) from your skill
-                room.send("message",message.chat);
-            };
-
+            
 
             // send message to room on submit
             document.querySelector("#form").onsubmit = function(e) {
@@ -87,7 +63,36 @@
                         // clear input
                         input.value = "";
                     };
-               
+                        //Alexa Creation
+            
+            var alexaClient;
+            Alexa.create({version: '1.1'})
+                .then((args) => {
+                    const {
+                        alexa,
+                        message
+                    } = args;
+                    this.alexaClient = alexa;
+                    
+                    this.alexaClient.skill.onMessage((message) => {   
+                      this.room.send("message",message.chat);                 
+                });
+                   
+                })
+                .catch(error => {
+                    
+                });
+
+ // Register a listener to receive a message from your skill
+            //  alexaClient.skill.onMessage(messageReceivedCallback);
+
+            // Implement the listener
+            const messageReceivedCallback = function(message) {
+                // Process message (JavaScript object) from your skill
+                room.send("message",message.chat);
+            };
+
+            
             });
 
             
