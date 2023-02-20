@@ -20,11 +20,19 @@
                 fontFamily: "Hack"
             });
             term.open(document.getElementById("terminal"));
-            const url = "ws://colyseus-chat.herokuapp.com:8080";
+
+            const PROTOCOL = window.location.protocol.replace("http", "ws");
+            const ENDPOINT = (window.location.hostname.indexOf("heroku") >= 0 || window.location.hostname.indexOf("now.sh") >= 0 )
+            ? `${ PROTOCOL }//${ window.location.hostname }` // port 80 on heroku or now
+            : `${ PROTOCOL }//${ window.location.hostname }:8080` // port 8080 on localhost
+
+
+
+            
             const roomname = 'gameRoom';
 
-            term.writeln(`connecting to ${url}`);
-            var client = new Colyseus.Client(url);
+            term.writeln(`connecting to ${ENDPOINT}`);
+            var client = new Colyseus.Client(ENDPOINT);
 
             term.writeln(`joining ${roomname}`);
 
