@@ -43,6 +43,7 @@
 
             client.joinOrCreate(roomname).then(room=> {
                 room.onMessage("message", (message)=> {
+                    console.log(`message reveived on frontend ${message}`);
                     var p = document.createElement("p");
                     p.innerText = message;
                     document.querySelector("#messages").appendChild(p);
@@ -73,11 +74,10 @@
                         alexa,
                         message
                     } = args;
-                    this.alexaClient = alexa;
-              console.log(this.alexaClient);
-                    
-                    this.alexaClient.skill.onMessage((message) => {   
-                      this.room.send("message",message.chat.value);                 
+                    alexaClient = alexa;
+                    console.log(alexaClient);
+                    alexaClient.skill.onMessage((message) => {   
+                      room.send("message",message.chat.value);                 
                 });
                    
                 })
@@ -85,6 +85,10 @@
                     
                 });
 
+ // Register a listener to receive a message from your skill
+            //  alexaClient.skill.onMessage(messageReceivedCallback);
+
+            
 
             
             });
