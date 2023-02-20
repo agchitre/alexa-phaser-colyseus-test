@@ -63,7 +63,7 @@ export class AlexaServer {
                     && Alexa.getIntentName(handlerInput.requestEnvelope) === 'ChatIntent';
             },
             handle(handlerInput) {
-                var msg = handlerInput.requestEnvelope.intent.slots.saidstring.value;
+                var msg = handlerInput.requestEnvelope.request.intent.slots.saidstring.value;
                 console.log(msg);
         
                 handlerInput.responseBuilder.addDirective({
