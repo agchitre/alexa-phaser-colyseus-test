@@ -77,7 +77,7 @@
               console.log(this.alexaClient);
                     
                     this.alexaClient.skill.onMessage((message) => {   
-                      this.room.send("message",message.chat);                 
+                      this.room.send("message",message.chat.value);                 
                 });
                    
                 })
@@ -85,14 +85,6 @@
                     
                 });
 
- // Register a listener to receive a message from your skill
-            //  alexaClient.skill.onMessage(messageReceivedCallback);
-
-            // Implement the listener
-            const messageReceivedCallback = function(message) {
-                // Process message (JavaScript object) from your skill
-                room.send("message",message.chat);
-            };
 
             
             });
