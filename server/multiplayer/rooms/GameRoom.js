@@ -9,9 +9,6 @@ export class WorldState extends Schema {
     }
 }
 
-defineTypes(WorldState, {
-    players: { map: PlayerEntity}
-})
 
 /* General Overview
  * 1. User starts the game on their Echo Show, connects to server which sets up a PlayerEntity for them
@@ -23,59 +20,11 @@ defineTypes(WorldState, {
 
 export class GameRoom extends Room {
     onCreate(options) {
-        this.setState(new WorldState());
-        this.controllers = {}; //mapping from controller ids to player ids
-        this.setupPlayerClientMessageHandlers();
-        this.setupControllerClientMessageHandlers();
-        this.setSimulationInterval((dt) => this.update(dt));
-    }
+        console.log("Chat Room Created!!!", options);
 
-    setupPlayerClientMessageHandlers() {
-        this.onMessage("initPlayer", (client, message) => {
-            this.state.players.set(client.sessionId, new PlayerEntity(200, 200));
-
-            console.log("new player", client.sessionId);
-        });
-
-        this.onMessage("tapAtPosition", (client, message) => {
-            let player = this.state.players.get(client.sessionId);
-            if(player !== undefined) {
-                player.setTargetPosition(message.x, message.y);
-            }
-        });
-    }
-
-    setupControllerClientMessageHandlers() {
-        this.onMessage("initController", (client, message) => {
-            let player = this.state.players.get(message.playerId);
-            if(player !== undefined) {
-                this.controllers[client.sessionId] = {"client":client, "playerId": message.playerId};
-                client.send("controllerInitialized", {});
-
-                console.log(client.sessionId, " is controller for player", message.playerId);
-            }
-            else {
-                client.send("invalidPlayer", {});
-            }
-        });
-
-        this.onMessage("startControllerInput", (client, message) => {
-            let player = this.getPlayerForController(client.sessionId);
-            if(player !== undefined) {
-                player.startControllerInput(message.direction);
-            }
-        });
-        this.onMessage("stopControllerInput", (client, message) => {
-            let player = this.getPlayerForController(client.sessionId);
-            if(player !== undefined) {
-                player.stopControllerInput();
-            }
-        });
-    }
-
-    getPlayerForController(controllerId) {
-        let playerId = this.controllers[controllerId].playerId;
-        return this.state.players.get(playerId);``
+        this.onMessage("message", (client,data)=>{
+            this.broadcast("message", data);
+        })
     }
 
     onJoin(client, options) {
