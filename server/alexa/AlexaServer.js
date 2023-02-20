@@ -64,6 +64,7 @@ export class AlexaServer {
             },
             handle(handlerInput) {
                 var msg = handlerInput.requestEnvelope.intent.slots.saidstring.value;
+                console.log(msg);
         
                 handlerInput.responseBuilder.addDirective({
                     "type":"Alexa.Presentation.HTML.HandleMessage",
