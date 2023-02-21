@@ -21,16 +21,23 @@ import { PlayerEntity } from "../entities/PlayerEntity.js";
 export class GameRoom extends Room {
     onCreate(options) {
         console.log("Chat Room Created!!!", options);
+        console.log('created');
 
+/*         this.onMessage("message", (client,data)=>{
+            console.log(`received${data}`);
+            var jsonData = JSON.parse(data);
+            this.broadcast("message", `(${jsonData.name}) ${jsonData.chat}`);
+        }) */
+    }
+
+    onJoin(client, options) {
+        console.log('joined');
+        //this.broadcast("messages", `${ client.sessionId } joined.`);
         this.onMessage("message", (client,data)=>{
             console.log(`received${data}`);
             var jsonData = JSON.parse(data);
             this.broadcast("message", `(${jsonData.name}) ${jsonData.chat}`);
         })
-    }
-
-    onJoin(client, options) {
-        this.broadcast("messages", `${ client.sessionId } joined.`);
     }
 
     onLeave(client, options) {
