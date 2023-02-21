@@ -37,19 +37,7 @@ const PROTOCOL = window.location.protocol.replace("http", "ws");
             
 
             // send message to room on submit
-            document.querySelector("#form").onsubmit = function(e) {
-                        e.preventDefault();
 
-                        var input = document.querySelector("#input");
-
-                        console.log("input:", input.value);
-
-                        // send data to room
-                        room.send("message", input.value);
-
-                        // clear input
-                        input.value = "";
-                    };
                         //Alexa Creation
             
             var alexaClient;
