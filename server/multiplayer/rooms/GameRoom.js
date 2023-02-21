@@ -2,13 +2,13 @@ import { Schema, MapSchema, defineTypes } from "@colyseus/schema";
 import { Room } from "colyseus";
 import { PlayerEntity } from "../entities/PlayerEntity.js";
 
-export class WorldState extends Schema {
+/* export class WorldState extends Schema {
     constructor() {
         super();
         this.players = new MapSchema();
     }
 }
-
+ */
 
 /* General Overview
  * 1. User starts the game on their Echo Show, connects to server which sets up a PlayerEntity for them
@@ -23,8 +23,8 @@ export class GameRoom extends Room {
         console.log("Chat Room Created!!!", options);
 
         this.onMessage("message", (client,data)=>{
-            console.log(data);
-            this.broadcast("message", `(${client.sessionId}) ${data}`);
+            console.log(`received${data}`);
+            this.broadcast("message", `(${client.sessionId}) ${data.chat}`);
         })
     }
 
