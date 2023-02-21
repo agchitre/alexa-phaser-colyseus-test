@@ -22,6 +22,7 @@ export class GameRoom extends Room {
     onCreate(options) {
         console.log("Chat Room Created!!!", options);
         console.log('created');
+        this.broadcast("message", `(New Room Created!)`);
 
 /*         this.onMessage("message", (client,data)=>{
             console.log(`received${data}`);
@@ -36,7 +37,7 @@ export class GameRoom extends Room {
         this.onMessage("message", (client,data)=>{
             console.log(`received${data}`);
             var jsonData = JSON.parse(data);
-            this.broadcast("message", `(${jsonData.name}) joined.`);
+            
             this.broadcast("message", `(${jsonData.name}) ${jsonData.chat}`);
         })
     }
