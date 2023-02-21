@@ -240,7 +240,8 @@ export class AlexaServer {
             ErrorHandler,
             )
         .addRequestInterceptors(LogRequestInterceptor)
-        .addResponseInterceptors(LogResponseInterceptor) ;
+        .addResponseInterceptors(LogResponseInterceptor)
+        .withApiClient(new Alexa.DefaultApiClient());
         
         const skill = skillBuilder.create();
         const expressAdapter = new ExpressAdapter(skill, false, false);
