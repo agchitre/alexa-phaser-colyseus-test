@@ -19,6 +19,7 @@ import { PlayerEntity } from "../entities/PlayerEntity.js";
  */
 
 export class GameRoom extends Room {
+    
     onCreate(options) {
         console.log("Chat Room Created!!!", options);
         console.log('created');
@@ -37,19 +38,14 @@ export class GameRoom extends Room {
         this.onMessage("message", (client,data)=>{
             console.log(`received${data}`);
             var jsonData = JSON.parse(data);
+            window.nameOfClient = jsonData.name;
             
             this.broadcast("message", `(${jsonData.name}) ${jsonData.chat}`);
         })
     }
 
     onLeave(client, options) {
-        if(this.state.players.get(client.sessionId) !== undefined) {
-            this.state.players.delete(client.sessionId);
-        }
-
-        else if(this.controllers[client.sessionId] !== undefined) {
-            delete this.controllers[client.sessionId];
-        }
+        this.broadcast("messages", `${ window.nameOfClient} left.`);
     }
 
     update (dt) {
