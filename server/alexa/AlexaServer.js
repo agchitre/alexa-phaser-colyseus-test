@@ -75,8 +75,8 @@ export class AlexaServer {
                       .getResponse();
                   }
                 const client = serviceClientFactory.getUpsServiceClient();
-                const userName = await client.getProfileName();
-                
+                //const userName = await client.getProfileName();
+                const userName = await client.getProfileGivenName();
                 var msg = handlerInput.requestEnvelope.request.intent.slots.saidstring.value;
                 console.log(msg);
         
