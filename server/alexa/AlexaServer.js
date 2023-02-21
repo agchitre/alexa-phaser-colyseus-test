@@ -38,14 +38,14 @@ export class AlexaServer {
                     configuration: {
                        "timeoutInSeconds": 1800
                     }})
-                    .speak("Welcome back.");
+                    .speak("Welcome to metaverse chat.");
             }
             else {
                 handlerInput.responseBuilder.speak("Sorry, this skill is only supported on screened devices.");
             }
         };
 
-        const FULL_NAME_PERMISSION = "alexa::profile:name:read";
+        const FULL_NAME_PERMISSION = "alexa::profile:given_name:read";
         
         const LaunchRequestHandler = {
             canHandle(handlerInput) {
@@ -241,7 +241,7 @@ export class AlexaServer {
             )
         .addRequestInterceptors(LogRequestInterceptor)
         .addResponseInterceptors(LogResponseInterceptor)
-        .withApiClient(new Alexa.DefaultApiClient());
+        .withApiClient(new Alexa.DefaultApiClient()) ;
         
         const skill = skillBuilder.create();
         const expressAdapter = new ExpressAdapter(skill, false, false);
