@@ -37,6 +37,7 @@ const PROTOCOL = window.location.protocol.replace("http", "ws");
             
 
             // send message to room on submit
+                // send message
 
                         //Alexa Creation
             
