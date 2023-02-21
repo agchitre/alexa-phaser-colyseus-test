@@ -44,6 +44,8 @@ export class AlexaServer {
                 handlerInput.responseBuilder.speak("Sorry, this skill is only supported on screened devices.");
             }
         };
+
+        const FULL_NAME_PERMISSION = "alexa::profile:name:read";
         
         const LaunchRequestHandler = {
             canHandle(handlerInput) {
@@ -62,7 +64,19 @@ export class AlexaServer {
                 return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
                     && Alexa.getIntentName(handlerInput.requestEnvelope) === 'ChatIntent';
             },
-            handle(handlerInput) {
+            async handle(handlerInput) {
+                const { requestEnvelope, serviceClientFactory, responseBuilder } = handlerInput;
+                const requestAttributes = handlerInput.attributesManager.getRequestAttributes();
+                const consentToken = handlerInput.requestEnvelope.context.System.apiAccessToken;
+                if (!consentToken) {
+                    return responseBuilder
+                      .speak('Please provide permissions from mobile app to access metaverse')
+                      .withAskForPermissionsConsentCard(FULL_NAME_PERMISSION)
+                      .getResponse();
+                  }
+                const client = serviceClientFactory.getUpsServiceClient();
+                const userName = await client.getProfileName();
+                
                 var msg = handlerInput.requestEnvelope.request.intent.slots.saidstring.value;
                 console.log(msg);
         
@@ -70,7 +84,8 @@ export class AlexaServer {
                     "type":"Alexa.Presentation.HTML.HandleMessage",
                     "message": {
                         "intent":"ChatIntent",
-                        "chat": msg
+                        "chat": msg,
+                        "name": userName
                     }
                 });
 
