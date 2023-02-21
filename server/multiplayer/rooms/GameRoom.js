@@ -24,7 +24,8 @@ export class GameRoom extends Room {
 
         this.onMessage("message", (client,data)=>{
             console.log(`received${data}`);
-            this.broadcast("message", `(${client.sessionId}) ${data.chat}`);
+            var jsonData = JSON.parse(data);
+            this.broadcast("message", `(${client.sessionId}) ${jsonData.chat}`);
         })
     }
 
