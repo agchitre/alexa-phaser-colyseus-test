@@ -64,7 +64,7 @@ const PROTOCOL = window.location.protocol.replace("http", "ws");
                     alexaClient.skill.onMessage((message) => {   
                         printDebug('received a message from the skill endpoint');
                         printDebug(message);
-                      room.send("message",message);                 
+                      room.send("message",JSON.stringify(message));                
                 });
                    
                 })
